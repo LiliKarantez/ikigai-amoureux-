@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<style>.section{display:none!important}.section.active{display:block!important}</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Mon Ikigai — Les Cœurs Solitaires</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Bai+Jamjuree:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --violet: #9B59B6; --fuchsia: #E91E8C; --turquoise: #00BCD4;
+  --rouge: #B40028; --prune: #6B0050; --or: #C9960C;
+  --text: #2a1a35; --muted: rgba(42,26,53,0.55);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body { font-family: 'Bai Jamjuree', sans-serif; font-weight: 300; min-height: 100vh; overflow-x: hidden; }
+
+/* ---- BACKGROUNDS ---- */
+body.bg-home { background: linear-gradient(160deg,#fdf6ff 0%,#f5e8ff 35%,#ffe8f5 70%,#e8f8ff 100%); }
+body.bg-amoureux { background: linear-gradient(160deg,#fdf6ff 0%,#f5e8ff 30%,#ffe8f5 65%,#e8f8ff 100%); }
+body.bg-intime { background: linear-gradient(160deg,#fff5f0 0%,#fdf0f5 25%,#f8eaf8 55%,#fdf5e0 100%); }
+
+canvas#hearts { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; opacity:0.22; }
+.wrap { position:relative; z-index:1; max-width:780px; margin:0 auto; padding:36px 16px 72px; }
+@keyframes fi { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+
+/* ---- SECTION VISIBILITY ---- */
+.section { display:none; }
+.section.active { display:block; animation:fi 0.45s ease; }
+
+/* ---- HOME ---- */
+.home-header { text-align:center; margin-bottom:40px; }
+.home-brand { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--fuchsia); margin-bottom:16px; }
+.home-title { font-family:'Cormorant Garamond',serif; font-size:clamp(36px,7vw,58px); font-weight:300; line-height:1.1;
+  background:linear-gradient(135deg,#7b2d8b 0%,var(--fuchsia) 55%,#c0006e 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:14px; }
+.home-sub { font-size:15px; color:var(--muted); line-height:1.75; max-width:520px; margin:0 auto 36px; }
+.home-intro { background:rgba(255,255,255,0.82); border:1.5px solid rgba(155,89,182,0.18); border-radius:18px;
+  padding:28px 28px 32px; margin-bottom:28px; box-shadow:0 4px 24px rgba(155,89,182,0.08); }
+.home-intro p { font-family:'Cormorant Garamond',serif; font-size:clamp(16px,4vw,18px); font-weight:300;
+  line-height:1.9; color:var(--text); margin-bottom:14px; }
+.home-intro p:last-child { margin-bottom:0; }
+.home-cards { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media(max-width:500px){ .home-cards { grid-template-columns:1fr; } }
+.home-card { border-radius:18px; padding:26px 22px; cursor:pointer; transition:all 0.3s; border:1.5px solid transparent; -webkit-tap-highlight-color:transparent; }
+.home-card.amoureux { background:linear-gradient(135deg,rgba(233,30,140,0.08),rgba(155,89,182,0.06)); border-color:rgba(233,30,140,0.25); }
+.home-card.intime { background:linear-gradient(135deg,rgba(180,0,40,0.08),rgba(201,150,12,0.06)); border-color:rgba(180,0,40,0.25); }
+.home-card:hover { transform:translateY(-3px); box-shadow:0 8px 28px rgba(0,0,0,0.1); }
+.hc-icon { font-size:28px; margin-bottom:10px; }
+.hc-title { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:400; margin-bottom:6px; }
+.amoureux .hc-title { color:#4a1060; }
+.intime .hc-title { color:#5a0020; }
+.hc-desc { font-size:12px; line-height:1.65; color:var(--muted); margin-bottom:16px; }
+.hc-btn { display:inline-block; padding:10px 20px; border-radius:24px; font-family:'Bai Jamjuree',sans-serif;
+  font-size:11px; letter-spacing:1.2px; text-transform:uppercase; border:none; cursor:pointer; transition:all 0.3s; -webkit-tap-highlight-color:transparent; }
+.amoureux .hc-btn { background:linear-gradient(135deg,var(--fuchsia),var(--violet)); color:white; box-shadow:0 3px 14px rgba(233,30,140,0.28); }
+.intime .hc-btn { background:linear-gradient(135deg,var(--rouge),var(--prune)); color:white; box-shadow:0 3px 14px rgba(180,0,40,0.28); }
+.hc-badge { display:inline-block; margin-left:8px; padding:2px 8px; border-radius:10px; font-size:10px;
+  background:rgba(180,0,40,0.12); color:#8B0020; border:1px solid rgba(180,0,40,0.25); vertical-align:middle; }
+
+/* ---- TOOL HEADER ---- */
+.tool-back { display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--muted);
+  cursor:pointer; margin-bottom:28px; opacity:0.7; transition:opacity 0.2s; -webkit-tap-highlight-color:transparent; }
+.tool-back:hover { opacity:1; }
+header { text-align:center; margin-bottom:36px; }
+.brand { font-size:11px; letter-spacing:3px; text-transform:uppercase; margin-bottom:14px; }
+.brand-a { color:var(--fuchsia); }
+.brand-i { color:var(--or); }
+h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(34px,7vw,56px); font-weight:300; line-height:1.1; margin-bottom:12px; }
+.h1-a { background:linear-gradient(135deg,#7b2d8b 0%,var(--fuchsia) 60%,#c0006e 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.h1-i { background:linear-gradient(135deg,#8B0030 0%,var(--rouge) 40%,var(--or) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.sub { font-size:14px; color:var(--muted); line-height:1.7; max-width:460px; margin:0 auto; }
+.badge-18 { display:inline-block; margin-top:10px; padding:4px 12px; border-radius:20px;
+  background:rgba(180,0,40,0.1); border:1px solid rgba(180,0,40,0.3); font-size:11px; letter-spacing:1px; color:var(--rouge); text-transform:uppercase; }
+.intro-text { max-width:600px; margin:0 auto 32px; text-align:left; }
+.intro-text p { font-family:'Cormorant Garamond',serif; font-size:clamp(16px,4vw,18px); font-weight:300; line-height:1.9; color:var(--text); margin-bottom:14px; }
+.intro-text p:last-child { margin-bottom:0; }
+.intro-cta-line { font-size:clamp(13px,3vw,14px) !important; font-style:italic; opacity:0.65; font-family:'Bai Jamjuree',sans-serif !important; letter-spacing:0.5px; }
+
+/* ---- DOTS ---- */
+.dots { display:flex; justify-content:center; gap:9px; margin-bottom:32px; }
+.dot { width:8px; height:8px; border-radius:50%; transition:all 0.4s; }
+.dots-a .dot { background:rgba(155,89,182,0.2); border:1px solid rgba(155,89,182,0.3); }
+.dots-a .dot.on { background:var(--fuchsia); box-shadow:0 0 10px rgba(233,30,140,0.5); border-color:var(--fuchsia); }
+.dots-a .dot.done { background:var(--violet); border-color:var(--violet); }
+.dots-i .dot { background:rgba(180,0,40,0.15); border:1px solid rgba(180,0,40,0.25); }
+.dots-i .dot.on { background:var(--rouge); box-shadow:0 0 10px rgba(180,0,40,0.45); border-color:var(--rouge); }
+.dots-i .dot.done { background:var(--prune); border-color:var(--prune); }
+
+/* ---- STEP ---- */
+.step { display:none; }
+.step.show { display:block; animation:fi 0.4s ease; }
+.sh { display:flex; align-items:flex-start; gap:16px; margin-bottom:22px; }
+.si { width:64px; height:64px; min-width:64px; }
+.si svg { width:100%; height:100%; }
+.stitle { font-family:'Cormorant Garamond',serif; font-size:clamp(20px,5vw,24px); font-weight:400; line-height:1.2; padding-top:8px; }
+.stitle-a { color:#4a1060; }
+.stitle-i { color:#5a0020; }
+.sdesc { font-size:12px; color:var(--muted); margin-top:4px; line-height:1.6; }
+.tarea { background:rgba(255,255,255,0.88); border-radius:12px; padding:14px; margin-bottom:10px;
+  min-height:60px; display:flex; flex-wrap:wrap; gap:7px; align-items:center; transition:border-color 0.3s; cursor:text; border:1.5px solid rgba(155,89,182,0.22); }
+.tarea-i { border-color:rgba(180,0,40,0.18); }
+.tarea-a:focus-within { border-color:var(--fuchsia); box-shadow:0 0 0 3px rgba(233,30,140,0.1); }
+.tarea-i:focus-within { border-color:var(--rouge); box-shadow:0 0 0 3px rgba(180,0,40,0.1); }
+.tinput { background:none; border:none; outline:none; color:var(--text); font-family:'Bai Jamjuree',sans-serif; font-size:16px; font-weight:300; min-width:120px; flex:1; -webkit-appearance:none; }
+.tinput::placeholder { color:rgba(100,60,130,0.32); }
+.tag { display:inline-flex; align-items:center; gap:5px; padding:5px 11px; border-radius:18px; font-size:13px; animation:tp 0.2s ease; font-weight:400; }
+@keyframes tp { from{transform:scale(0.8);opacity:0} to{transform:scale(1);opacity:1} }
+.tag.c1a { background:rgba(233,30,140,0.12); border:1px solid rgba(233,30,140,0.35); color:#a0005a; }
+.tag.c2a { background:rgba(0,188,212,0.12); border:1px solid rgba(0,188,212,0.35); color:#006680; }
+.tag.c3a { background:rgba(155,89,182,0.12); border:1px solid rgba(155,89,182,0.35); color:#5a1f82; }
+.tag.c4a { background:rgba(180,60,140,0.1); border:1px solid rgba(180,60,140,0.3); color:#7a1060; }
+.tag.c1i { background:rgba(180,0,40,0.12); border:1px solid rgba(180,0,40,0.35); color:#8B0020; }
+.tag.c2i { background:rgba(107,0,80,0.12); border:1px solid rgba(107,0,80,0.35); color:#6B0050; }
+.tag.c3i { background:rgba(139,0,48,0.1); border:1px solid rgba(139,0,48,0.3); color:#700030; }
+.tag.c4i { background:rgba(201,150,12,0.12); border:1px solid rgba(201,150,12,0.35); color:#8B6300; }
+.trm { cursor:pointer; opacity:0.45; font-size:15px; line-height:1; transition:opacity 0.2s; padding:2px; }
+.trm:hover { opacity:0.85; }
+.hint { font-size:12px; color:var(--muted); margin-bottom:16px; opacity:0.65; }
+.sugg { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:22px; }
+.sg { padding:6px 13px; border-radius:16px; font-size:12px; border:1px solid rgba(155,89,182,0.22);
+  color:rgba(90,30,120,0.7); cursor:pointer; transition:all 0.2s; background:rgba(255,255,255,0.75); -webkit-tap-highlight-color:transparent; }
+.sg-a:hover,.sg-a:active { border-color:var(--fuchsia); color:var(--fuchsia); background:rgba(233,30,140,0.07); }
+.sg-i { border-color:rgba(180,0,40,0.18); color:rgba(107,0,50,0.68); }
+.sg-i:hover,.sg-i:active { border-color:var(--rouge); color:var(--rouge); background:rgba(180,0,40,0.07); }
+.nav { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:4px; flex-wrap:wrap; }
+.btn { padding:12px 22px; border-radius:28px; border:none; cursor:pointer; font-family:'Bai Jamjuree',sans-serif;
+  font-size:12px; letter-spacing:1px; text-transform:uppercase; transition:all 0.3s; white-space:nowrap; -webkit-tap-highlight-color:transparent; }
+.btn-a { background:linear-gradient(135deg,var(--fuchsia),var(--violet)); color:white; box-shadow:0 4px 16px rgba(233,30,140,0.25); }
+.btn-a:hover:not(:disabled),.btn-a:active:not(:disabled) { transform:translateY(-1px); box-shadow:0 7px 24px rgba(233,30,140,0.38); }
+.btn-i { background:linear-gradient(135deg,var(--rouge),var(--prune)); color:white; box-shadow:0 4px 16px rgba(180,0,40,0.25); }
+.btn-i:hover:not(:disabled),.btn-i:active:not(:disabled) { transform:translateY(-1px); box-shadow:0 7px 24px rgba(180,0,40,0.38); }
+.btn-p:disabled { opacity:0.3; cursor:not-allowed; transform:none; }
+.btn-s { background:rgba(255,255,255,0.8); color:var(--muted); border:1px solid rgba(155,89,182,0.2); }
+.btn-s:hover { color:var(--violet); border-color:var(--violet); }
+.btn-si { background:rgba(255,255,255,0.8); color:var(--muted); border:1px solid rgba(180,0,40,0.18); }
+.btn-si:hover { color:var(--rouge); border-color:var(--rouge); }
+.cnt { font-size:12px; color:var(--muted); }
+
+/* ---- RESULT ---- */
+.ikigai-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:20px; }
+@media(max-width:480px){ .ikigai-grid { grid-template-columns:1fr; } }
+.ikigai-cell { border-radius:18px; padding:20px 18px; min-height:130px; }
+.qa1 { background:linear-gradient(135deg,rgba(233,30,140,0.1),rgba(233,30,140,0.03)); border:1.5px solid rgba(233,30,140,0.28); }
+.qa2 { background:linear-gradient(135deg,rgba(0,188,212,0.1),rgba(0,188,212,0.03)); border:1.5px solid rgba(0,188,212,0.28); }
+.qa3 { background:linear-gradient(135deg,rgba(155,89,182,0.1),rgba(155,89,182,0.03)); border:1.5px solid rgba(155,89,182,0.28); }
+.qa4 { background:linear-gradient(135deg,rgba(180,60,140,0.09),rgba(155,89,182,0.04)); border:1.5px solid rgba(180,60,140,0.25); }
+.qi1 { background:linear-gradient(135deg,rgba(180,0,40,0.1),rgba(180,0,40,0.03)); border:1.5px solid rgba(180,0,40,0.28); }
+.qi2 { background:linear-gradient(135deg,rgba(107,0,80,0.1),rgba(107,0,80,0.03)); border:1.5px solid rgba(107,0,80,0.28); }
+.qi3 { background:linear-gradient(135deg,rgba(139,0,48,0.1),rgba(139,0,48,0.03)); border:1.5px solid rgba(139,0,48,0.25); }
+.qi4 { background:linear-gradient(135deg,rgba(201,150,12,0.1),rgba(201,150,12,0.03)); border:1.5px solid rgba(201,150,12,0.3); }
+.cell-header { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+.cell-illu { width:48px; height:48px; min-width:48px; }
+.cell-illu svg { width:100%; height:100%; }
+.cell-label { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; font-weight:500; line-height:1.4; }
+.qa1 .cell-label,.qi1 .cell-label { color:#a0005a; } .qa2 .cell-label { color:#006680; } .qa3 .cell-label { color:#5a1f82; } .qa4 .cell-label { color:#7a1060; }
+.qi2 .cell-label { color:#6B0050; } .qi3 .cell-label { color:#700030; } .qi4 .cell-label { color:#8B6300; }
+.cell-tags { display:flex; flex-wrap:wrap; gap:5px; }
+.cell-tag { font-family:'Cormorant Garamond',serif; font-size:14px; font-style:italic; padding:3px 9px; border-radius:14px; }
+.qa1 .cell-tag { background:rgba(233,30,140,0.1); color:#a0005a; } .qa2 .cell-tag { background:rgba(0,188,212,0.1); color:#006680; }
+.qa3 .cell-tag { background:rgba(155,89,182,0.1); color:#5a1f82; } .qa4 .cell-tag { background:rgba(180,60,140,0.09); color:#7a1060; }
+.qi1 .cell-tag { background:rgba(180,0,40,0.1); color:#8B0020; } .qi2 .cell-tag { background:rgba(107,0,80,0.1); color:#6B0050; }
+.qi3 .cell-tag { background:rgba(139,0,48,0.1); color:#700030; } .qi4 .cell-tag { background:rgba(201,150,12,0.1); color:#8B6300; }
+.ikigai-center { text-align:center; margin:0 0 26px; padding:14px 20px; border-radius:50px; }
+.ikigai-center-a { background:linear-gradient(135deg,rgba(255,255,255,0.92),rgba(253,230,255,0.88)); border:1.5px solid rgba(233,30,140,0.25); box-shadow:0 4px 18px rgba(155,89,182,0.1); }
+.ikigai-center-i { background:linear-gradient(135deg,rgba(255,255,255,0.92),rgba(255,240,220,0.88)); border:1.5px solid rgba(201,150,12,0.35); box-shadow:0 4px 18px rgba(180,0,40,0.1); }
+.ikigai-center-heart { font-size:20px; margin-bottom:3px; }
+.ikigai-center-label { font-size:10px; letter-spacing:2px; text-transform:uppercase; }
+.ikigai-center-a .ikigai-center-label { color:var(--fuchsia); }
+.ikigai-center-i .ikigai-center-label { color:var(--or); }
+.sc { border-radius:18px; padding:28px; margin-bottom:22px; box-shadow:0 4px 22px rgba(155,89,182,0.08); }
+.sc-a { background:linear-gradient(135deg,rgba(255,255,255,0.93),rgba(253,236,255,0.88)); border:1.5px solid rgba(155,89,182,0.2); }
+.sc-i { background:linear-gradient(135deg,rgba(255,255,255,0.93),rgba(255,238,230,0.88)); border:1.5px solid rgba(180,0,40,0.2); }
+.sl { font-size:10px; letter-spacing:3px; text-transform:uppercase; margin-bottom:14px; }
+.sl-a { color:var(--fuchsia); } .sl-i { color:var(--or); }
+.portrait-text { font-family:'Cormorant Garamond',serif; font-size:clamp(16px,4vw,18px); font-weight:300; line-height:1.9; font-style:italic; min-height:40px; }
+.portrait-text-a { color:#3a1050; } .portrait-text-i { color:#3a0015; }
+.ldots { display:inline-flex; gap:4px; align-items:center; }
+.ldots-a span { width:6px; height:6px; border-radius:50%; background:var(--fuchsia); animation:bounce 1.2s infinite; }
+.ldots-i span { width:6px; height:6px; border-radius:50%; background:var(--rouge); animation:bounce 1.2s infinite; }
+.ldots span:nth-child(2) { animation-delay:0.2s; } .ldots span:nth-child(3) { animation-delay:0.4s; }
+@keyframes bounce { 0%,80%,100%{transform:scale(0.6);opacity:0.4} 40%{transform:scale(1);opacity:1} }
+
+/* ---- FORM ---- */
+.form-block { border-radius:18px; padding:28px; margin-bottom:22px; box-shadow:0 4px 22px rgba(155,89,182,0.07); }
+.form-block-a { background:linear-gradient(135deg,rgba(255,255,255,0.93),rgba(240,228,255,0.88)); border:1.5px solid rgba(155,89,182,0.22); }
+.form-block-i { background:linear-gradient(135deg,rgba(255,255,255,0.93),rgba(255,235,225,0.88)); border:1.5px solid rgba(180,0,40,0.2); }
+.form-title { font-family:'Cormorant Garamond',serif; font-size:clamp(20px,5vw,24px); font-weight:400; margin-bottom:8px; }
+.form-title-a { color:#4a1060; } .form-title-i { color:#5a0020; }
+.form-sub { font-size:13px; color:var(--muted); margin-bottom:22px; line-height:1.6; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+@media(max-width:520px){ .form-row { grid-template-columns:1fr; } }
+.form-row.full { grid-template-columns:1fr; }
+.field { display:flex; flex-direction:column; gap:5px; }
+.field label { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(90,30,120,0.6); }
+.field-i label { color:rgba(107,0,50,0.6); }
+.field input { background:rgba(255,255,255,0.92); border-radius:10px; padding:12px 14px;
+  font-family:'Bai Jamjuree',sans-serif; font-size:16px; font-weight:300; color:var(--text);
+  outline:none; transition:border-color 0.3s; -webkit-appearance:none; width:100%; }
+.field-a input { border:1.5px solid rgba(155,89,182,0.2); }
+.field-i input { border:1.5px solid rgba(180,0,40,0.18); }
+.field-a input:focus { border-color:var(--fuchsia); box-shadow:0 0 0 3px rgba(233,30,140,0.1); }
+.field-i input:focus { border-color:var(--rouge); box-shadow:0 0 0 3px rgba(180,0,40,0.1); }
+.field input::placeholder { color:rgba(100,60,130,0.28); font-size:14px; }
+.rgpd-row { display:flex; align-items:flex-start; gap:12px; margin:18px 0 22px; }
+.rgpd-check { width:20px; height:20px; min-width:20px; cursor:pointer; margin-top:1px; }
+.rgpd-check-a { accent-color:var(--fuchsia); } .rgpd-check-i { accent-color:var(--rouge); }
+.rgpd-label { font-size:12px; color:var(--muted); line-height:1.65; }
+.rgpd-label strong { font-weight:500; }
+.rgpd-label-a strong { color:#5a1f82; } .rgpd-label-i strong { color:var(--prune); }
+.rgpd-mention { font-size:11px; margin-top:14px; line-height:1.6; text-align:center; font-style:italic; }
+.rgpd-mention-a { color:rgba(90,30,120,0.4); } .rgpd-mention-i { color:rgba(107,0,50,0.38); }
+.btn-send { width:100%; padding:15px; color:white; border:none; border-radius:28px;
+  font-family:'Bai Jamjuree',sans-serif; font-size:13px; letter-spacing:1.5px; text-transform:uppercase;
+  cursor:pointer; transition:all 0.3s; -webkit-tap-highlight-color:transparent; }
+.btn-send-a { background:linear-gradient(135deg,var(--fuchsia),var(--violet)); box-shadow:0 4px 18px rgba(233,30,140,0.28); }
+.btn-send-i { background:linear-gradient(135deg,var(--rouge),var(--prune)); box-shadow:0 4px 18px rgba(180,0,40,0.28); }
+.btn-send:hover:not(:disabled),.btn-send:active:not(:disabled) { transform:translateY(-1px); }
+.btn-send:disabled { opacity:0.33; cursor:not-allowed; transform:none; }
+.confirm-msg { display:none; text-align:center; padding:20px; border-radius:14px;
+  font-family:'Cormorant Garamond',serif; font-size:17px; font-style:italic; margin-top:14px; line-height:1.7; }
+.confirm-msg-a { background:rgba(233,30,140,0.07); border:1px solid rgba(233,30,140,0.22); color:#a0005a; }
+.confirm-msg-i { background:rgba(180,0,40,0.06); border:1px solid rgba(180,0,40,0.2); color:#8B0020; }
+
+/* ---- CTA ---- */
+.cta { text-align:center; border-radius:18px; padding:28px; margin-top:18px; }
+.cta-a { background:linear-gradient(135deg,rgba(155,89,182,0.1),rgba(233,30,140,0.06)); border:1.5px solid rgba(155,89,182,0.2); }
+.cta-i { background:linear-gradient(135deg,rgba(180,0,40,0.08),rgba(201,150,12,0.07)); border:1.5px solid rgba(201,150,12,0.28); }
+.ctat { font-family:'Cormorant Garamond',serif; font-size:clamp(18px,5vw,22px); font-weight:400; margin-bottom:10px; }
+.ctat-a { color:#4a1060; } .ctat-i { color:#5a0020; }
+.ctad { font-size:13px; color:var(--muted); margin-bottom:18px; line-height:1.7; }
+.cta-events { display:flex; flex-direction:column; gap:10px; align-items:center; }
+.ctab { display:inline-block; padding:13px 28px; color:white; border-radius:28px; text-decoration:none;
+  font-family:'Bai Jamjuree',sans-serif; font-size:12px; letter-spacing:1px; text-transform:uppercase;
+  transition:all 0.3s; -webkit-tap-highlight-color:transparent; }
+.ctab-a { background:linear-gradient(135deg,var(--fuchsia),var(--violet)); box-shadow:0 4px 18px rgba(233,30,140,0.28); }
+.ctab-i { background:linear-gradient(135deg,var(--rouge),var(--prune)); box-shadow:0 4px 18px rgba(180,0,40,0.28); }
+.ctab-sec-a { background:transparent; color:var(--fuchsia); border:1.5px solid var(--fuchsia); box-shadow:none; }
+.ctab-sec-i { background:transparent; color:var(--rouge); border:1.5px solid var(--rouge); box-shadow:none; }
+.ctab:hover { transform:translateY(-1px); }
+
+/* ---- TRANSITION VERS INTIME ---- */
+.switch-intime { text-align:center; margin-top:32px; padding:24px; border-radius:18px;
+  background:linear-gradient(135deg,rgba(180,0,40,0.07),rgba(201,150,12,0.05));
+  border:1.5px solid rgba(180,0,40,0.18); }
+.switch-intime p { font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:300; line-height:1.8; color:#3a0015; margin-bottom:16px; font-style:italic; }
+.rbtn { background:none; border:none; font-size:12px; cursor:pointer; margin:16px auto 0;
+  font-family:'Bai Jamjuree',sans-serif; text-decoration:underline; opacity:0.5; transition:opacity 0.2s; display:block; -webkit-tap-highlight-color:transparent; }
+.rbtn:hover { opacity:0.85; }
+.rbtn-a { color:var(--muted); } .rbtn-i { color:var(--muted); }
+footer { text-align:center; margin-top:52px; font-size:11px; color:rgba(80,40,100,0.3); letter-spacing:0.8px; line-height:1.8; }
+
+.switch-tool {
+  text-align:center; margin-top:28px; padding:22px;
+  border-radius:18px;
+}
+.switch-to-intime {
+  background:linear-gradient(135deg,rgba(180,0,40,0.07),rgba(201,150,12,0.05));
+  border:1.5px solid rgba(180,0,40,0.18);
+}
+.switch-to-amoureux {
+  background:linear-gradient(135deg,rgba(233,30,140,0.07),rgba(155,89,182,0.05));
+  border:1.5px solid rgba(155,89,182,0.2);
+}
+.switch-tool p {
+  font-family:'Cormorant Garamond',serif;
+  font-size:17px; font-weight:300; line-height:1.8;
+  margin-bottom:16px; font-style:italic;
+}
+.switch-to-intime p { color:#3a0015; }
+.switch-to-amoureux p { color:#3a1050; }
+.switch-btn-i {
+  background:linear-gradient(135deg,#B40028,#6B0050);
+  color:white; border:none; cursor:pointer;
+  padding:11px 24px; border-radius:26px;
+  font-family:'Bai Jamjuree',sans-serif;
+  font-size:12px; letter-spacing:1px; text-transform:uppercase;
+  transition:all 0.3s; box-shadow:0 4px 16px rgba(180,0,40,0.25);
+  -webkit-tap-highlight-color:transparent;
+}
+.switch-btn-a {
+  background:linear-gradient(135deg,#E91E8C,#9B59B6);
+  color:white; border:none; cursor:pointer;
+  padding:11px 24px; border-radius:26px;
+  font-family:'Bai Jamjuree',sans-serif;
+  font-size:12px; letter-spacing:1px; text-transform:uppercase;
+  transition:all 0.3s; box-shadow:0 4px 16px rgba(233,30,140,0.25);
+  -webkit-tap-highlight-color:transparent;
+}
+.switch-btn-i:hover, .switch-btn-a:hover { transform:translateY(-1px); }
+
+.form-light { background:linear-gradient(135deg,rgba(255,255,255,0.9),rgba(255,235,225,0.85));
+  border:1px solid rgba(180,0,40,0.15); border-radius:16px; padding:22px 24px; margin-bottom:20px;
+  box-shadow:0 3px 16px rgba(180,0,40,0.06); }
+.form-light-text { font-family:'Cormorant Garamond',serif; font-size:clamp(15px,3.5vw,17px);
+  font-weight:300; line-height:1.75; color:#3a0015; margin-bottom:16px; font-style:italic; }
+.form-light-row { display:flex; gap:10px; align-items:center; }
+@media(max-width:480px){ .form-light-row { flex-direction:column; } }
+.form-light-input { flex:1; background:rgba(255,255,255,0.92); border:1.5px solid rgba(180,0,40,0.18);
+  border-radius:10px; padding:11px 14px; font-family:'Bai Jamjuree',sans-serif; font-size:15px;
+  font-weight:300; color:var(--text); outline:none; transition:border-color 0.3s;
+  -webkit-appearance:none; width:100%; }
+.form-light-input:focus { border-color:var(--rouge); box-shadow:0 0 0 3px rgba(180,0,40,0.1); }
+.form-light-input::placeholder { color:rgba(100,30,50,0.3); }
+.form-light-btn { padding:11px 22px; background:linear-gradient(135deg,var(--rouge),var(--prune));
+  color:white; border:none; border-radius:24px; font-family:'Bai Jamjuree',sans-serif;
+  font-size:12px; letter-spacing:1px; text-transform:uppercase; cursor:pointer; white-space:nowrap;
+  transition:all 0.3s; box-shadow:0 3px 14px rgba(180,0,40,0.25); -webkit-tap-highlight-color:transparent; }
+.form-light-btn:hover { transform:translateY(-1px); }
+
+/* ---- SYNTHÈSE GLOBALE ---- */
+.synthesis-block {
+  display: none;
+  margin-top: 32px;
+  animation: fi 0.5s ease;
+}
+.synthesis-block.visible { display: block; }
+.synthesis-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.synthesis-eyebrow {
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  background: linear-gradient(135deg, #E91E8C, #B40028);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 10px;
+}
+.synthesis-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(24px, 5vw, 32px); font-weight: 300; line-height: 1.2;
+  background: linear-gradient(135deg, #7b2d8b 0%, #E91E8C 40%, #B40028 70%, #C9960C 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 10px;
+}
+.synthesis-sub {
+  font-size: 13px; color: var(--muted); line-height: 1.7; max-width: 480px; margin: 0 auto;
+}
+.synthesis-recap {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;
+}
+@media(max-width:480px){ .synthesis-recap { grid-template-columns: 1fr; } }
+.synthesis-recap-cell {
+  border-radius: 14px; padding: 14px 16px;
+}
+.src-a { background: linear-gradient(135deg,rgba(233,30,140,0.08),rgba(155,89,182,0.05)); border: 1px solid rgba(233,30,140,0.2); }
+.src-i { background: linear-gradient(135deg,rgba(180,0,40,0.08),rgba(201,150,12,0.05)); border: 1px solid rgba(180,0,40,0.2); }
+.src-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; font-weight: 500; }
+.src-a .src-label { color: #a0005a; }
+.src-i .src-label { color: #8B0020; }
+.src-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.src-tag { font-family: 'Cormorant Garamond', serif; font-size: 13px; font-style: italic; padding: 2px 8px; border-radius: 12px; }
+.src-a .src-tag { background: rgba(233,30,140,0.1); color: #a0005a; }
+.src-i .src-tag { background: rgba(180,0,40,0.1); color: #8B0020; }
+.synthesis-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,235,245,0.9), rgba(255,245,220,0.85));
+  border: 1.5px solid rgba(233,30,140,0.22);
+  border-radius: 20px; padding: 32px;
+  box-shadow: 0 6px 32px rgba(155,89,182,0.12);
+  margin-bottom: 24px;
+  position: relative; overflow: hidden;
+}
+.synthesis-card::before {
+  content: '';
+  position: absolute; top: -40px; right: -40px;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(201,150,12,0.1), transparent 70%);
+  pointer-events: none;
+}
+.synthesis-sl {
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  background: linear-gradient(135deg, #E91E8C, #C9960C);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 16px;
+}
+.synthesis-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(17px, 4vw, 19px); font-weight: 300; line-height: 1.95;
+  font-style: italic; color: #2a0a18; min-height: 60px;
+}
+.synthesis-cta {
+  text-align: center;
+  background: linear-gradient(135deg, rgba(233,30,140,0.1), rgba(180,0,40,0.08), rgba(201,150,12,0.06));
+  border: 1.5px solid rgba(201,150,12,0.3);
+  border-radius: 18px; padding: 28px;
+}
+.synthesis-cta-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(18px,5vw,22px); font-weight: 400; color: #3a0015; margin-bottom: 10px;
+}
+.synthesis-cta-desc { font-size: 13px; color: var(--muted); margin-bottom: 18px; line-height: 1.7; }
+.synthesis-cta-btn {
+  display: inline-block; padding: 14px 32px;
+  background: linear-gradient(135deg, #E91E8C, #B40028, #6B0050);
+  color: white; border-radius: 30px; text-decoration: none;
+  font-family: 'Bai Jamjuree', sans-serif; font-size: 12px;
+  letter-spacing: 1.2px; text-transform: uppercase;
+  transition: all 0.3s; box-shadow: 0 4px 20px rgba(180,0,40,0.28);
+  -webkit-tap-highlight-color: transparent;
+}
+.synthesis-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(180,0,40,0.42); }
+</style>
+</head>
+<body class="bg-home">
+<canvas id="hearts"></canvas>
+<div class="wrap">
+
+  <!-- ========== HOME ========== -->
+  <div id="sec-home" class="section active">
+    <div class="home-header">
+      <div class="home-brand">Les Cœurs Solitaires</div>
+      <h2 class="home-title">Mon Ikigai</h2>
+      <p class="home-sub">Deux outils pour mieux vous connaître et rencontrer quelqu'un qui vous correspond vraiment.</p>
+    </div>
+    <div class="home-intro">
+      <p>Vous connaissez votre signe astrologique. Vous connaissez votre type de personnalité. Mais connaissez-vous vraiment votre profil amoureux ?</p>
+      <p>L'Ikigai est une philosophie japonaise fondée sur une idée simple. Quand ce qui vous fait vibrer, ce que vous donnez, ce dont vous avez besoin et ce que vous cherchez se croisent, vous touchez une vérité sur vous. Ces deux outils vous y invitent, chacun à sa façon.</p>
+    </div>
+    <div class="home-cards">
+      <div class="home-card amoureux">
+        <div class="hc-icon">✨</div>
+        <div class="hc-title">Ikigai Amoureux</div>
+        <div class="hc-desc">Découvrez le portrait de la relation qui vous correspond vraiment. Quatre cercles, cinq mots chacun, dix minutes.</div>
+        <button class="hc-btn" id="btnGoAmoureux">Commencer →</button>
+      </div>
+      <div class="home-card intime">
+        <div class="hc-icon">🔥</div>
+        <div class="hc-title">Ikigai Intime <span class="hc-badge">18+</span></div>
+        <div class="hc-desc">Explorez votre profil de compatibilité sexuelle. Direct, confidentiel, personnalisé.</div>
+        <button class="hc-btn" id="btnGoIntime">Commencer →</button>
+      </div>
+    </div>
+    <footer style="margin-top:40px;">
+      ©2026 Lili Karantez — Les Cœurs Solitaires — SIRET 40149331700069<br>
+      lilikarantez@gmail.com — Toute reproduction interdite, même partielle.
+    </footer>
+  </div>
+
+  <!-- ========== AMOUREUX ========== -->
+  <div id="sec-amoureux" class="section">
+    <div class="tool-back" id="backHomeA">← Retour à l'accueil</div>
+    <header>
+      <div class="brand brand-a">Les Cœurs Solitaires</div>
+      <h1 class="h1-a">Mon Ikigai<br><em>Amoureux</em></h1>
+      <p class="sub">Découvrez le portrait de la relation qui vous correspond vraiment.</p>
+      <div class="intro-text">
+        <p>Vous avez rencontré des célibataires dans la même situation que vous en passant des heures sur des applis ou allant à des soirées. Quelque chose vous a toujours manqué, pas faute de chercher, mais faute d'avoir posé les bonnes questions.</p>
+        <p>L'Ikigai est une philosophie japonaise fondée sur une idée simple : ce qui vous fait vibrer, ce que vous donnez, ce dont vous avez besoin et ce que vous cherchez. Ces 4 éléments vont se croiser et vous allez trouver votre raison d'être. Appliquée à l'amour, cette philosophie révèle le portrait de la relation qui vous correspond vraiment.</p>
+        <p class="intro-cta-line">Quatre cercles vous attendent en choisissant cinq mots. En dix minutes, votre recherche va changer.</p>
+      </div>
+    </header>
+    <div class="dots dots-a" id="dotsA">
+      <div class="dot on" id="dA0"></div><div class="dot" id="dA1"></div>
+      <div class="dot" id="dA2"></div><div class="dot" id="dA3"></div><div class="dot" id="dA4"></div>
+    </div>
+    <div id="stepsA"></div>
+    <div id="resultA" style="display:none;">
+      <div class="ikigai-grid" id="gridA"></div>
+      <div class="ikigai-center ikigai-center-a">
+        <div class="ikigai-center-heart">♥</div>
+        <div class="ikigai-center-label">Mon Ikigai Amoureux</div>
+      </div>
+      <div class="sc sc-a">
+        <div class="sl sl-a">✦ Mon portrait amoureux</div>
+        <div class="portrait-text portrait-text-a" id="portraitA"><div class="ldots ldots-a"><span></span><span></span><span></span></div></div>
+      </div>
+      <div class="form-block form-block-a">
+        <div class="form-title form-title-a">Et si on vous aidait à le rencontrer ?</div>
+        <div class="form-sub">Laissez-nous vos coordonnées. Nous utilisons votre portrait amoureux pour vous proposer des rencontres adaptées.</div>
+        <div class="form-row">
+          <div class="field field-a"><label>Prénom *</label><input type="text" id="aPrenom" placeholder="Votre prénom" autocomplete="given-name"></div>
+          <div class="field field-a"><label>Nom *</label><input type="text" id="aNom" placeholder="Votre nom" autocomplete="family-name"></div>
+        </div>
+        <div class="form-row">
+          <div class="field field-a"><label>Âge *</label><input type="number" id="aAge" placeholder="Votre âge" min="18" max="99" inputmode="numeric"></div>
+          <div class="field field-a"><label>Ville *</label><input type="text" id="aVille" placeholder="Votre ville" autocomplete="address-level2"></div>
+        </div>
+        <div class="form-row full">
+          <div class="field field-a"><label>Email *</label><input type="email" id="aEmail" placeholder="votre@email.fr" autocomplete="email" inputmode="email"></div>
+        </div>
+        <div class="form-row full">
+          <div class="field field-a"><label>Pseudo (affiché lors des matchings)</label><input type="text" id="aPseudo" placeholder="Le nom que vous souhaitez utiliser"></div>
+        </div>
+        <div class="rgpd-row">
+          <input type="checkbox" class="rgpd-check rgpd-check-a" id="aRgpd">
+          <label class="rgpd-label rgpd-label-a" for="aRgpd">J'accepte que <strong>Les Cœurs Solitaires</strong> conserve mes informations et mon portrait amoureux dans le cadre exclusif d'une mise en relation personnalisée et payante. Ces données ne seront jamais cédées ni vendues à un tiers.</label>
+        </div>
+        <button class="btn-send btn-send-a" id="aBtnSend" disabled>Envoyer mon profil ✦</button>
+        <div class="confirm-msg confirm-msg-a" id="aConfirm">Merci. Votre profil a bien été reçu.<br>Vous allez recevoir une copie par email.<br>Nous reviendrons vers vous très prochainement.</div>
+        <p class="rgpd-mention rgpd-mention-a">Vos données nous sont confiées. Elles ne seront jamais vendues, jamais partagées.</p>
+      </div>
+      <div class="switch-tool switch-to-intime">
+        <p>Vous souhaitez explorer votre compatibilité intime ? L'Ikigai Intime vous attend.</p>
+        <button class="hc-btn switch-btn-i" id="btnSwitchIntime">Découvrir l'Ikigai Intime 18+ →</button>
+      </div>
+      <div class="cta cta-a">
+        <div class="ctat ctat-a">Votre prochaine belle histoire commence peut-être ici.</div>
+        <div class="ctad">Rencontrez des célibataires qui vous ressemblent, dans un cadre pensé pour la vraie rencontre.</div>
+        <div class="cta-events">
+          <a href="https://ypl.me/PUR" target="_blank" class="ctab ctab-a">Salon de la Rencontre Célibataire — Vannes, samedi 6 juin 2026</a>
+        </div>
+      </div>
+      <div style="text-align:center"><button class="rbtn rbtn-a" id="aRestart">Recommencer mon Ikigai Amoureux</button></div>
+    </div>
+    <footer>©2026 Lili Karantez — Les Cœurs Solitaires — SIRET 40149331700069<br>lilikarantez@gmail.com — Toute reproduction interdite, même partielle.</footer>
+  </div>
+
+  <!-- ========== INTIME ========== -->
+  <div id="sec-intime" class="section">
+    <div class="tool-back" id="backHomeI">← Retour à l'accueil</div>
+    <header>
+      <div class="brand brand-i">Les Cœurs Solitaires</div>
+      <h1 class="h1-i">Mon Ikigai<br><em>Intime</em></h1>
+      <p class="sub">Découvrez votre profil de compatibilité sexuelle.</p>
+      <div class="badge-18">Contenu réservé aux adultes — 18+</div>
+      <div class="intro-text" style="margin-top:18px;">
+        <p>La compatibilité sexuelle se construit sur une connaissance de soi que peu de personnes prennent le temps de développer. Cet outil vous y invite, simplement et sans jugement.</p>
+        <p>Quatre cercles vous permettent d'explorer ce qui vous anime vraiment, la façon dont vous vous exprimez dans l'intimité, ce dont vous avez besoin pour vous abandonner pleinement et ce que vous attendez d'un partenaire. Chaque réponse vous rapproche d'une rencontre qui vous ressemble.</p>
+        <p class="intro-cta-line">Votre portrait intime vous attend au bout de ces quatre questions.</p>
+      </div>
+    </header>
+    <div class="dots dots-i" id="dotsI">
+      <div class="dot on" id="dI0"></div><div class="dot" id="dI1"></div>
+      <div class="dot" id="dI2"></div><div class="dot" id="dI3"></div><div class="dot" id="dI4"></div>
+    </div>
+    <div id="stepsI"></div>
+    <div id="resultI" style="display:none;">
+      <!-- ===== SYNTHÈSE GLOBALE ===== -->
+      <div class="synthesis-block" id="synthesisBlock">
+        <div class="synthesis-header">
+          <div class="synthesis-eyebrow">Les Cœurs Solitaires</div>
+          <div class="synthesis-title">Mon Portrait Complet</div>
+          <p class="synthesis-sub">Voici ce que vos deux ikigai révèlent ensemble sur vous, en amour et dans l'intimité.</p>
+        </div>
+        <div class="synthesis-recap" id="synthesisRecap"></div>
+        <div class="synthesis-card">
+          <div class="synthesis-sl">✦ Ma vérité amoureuse et intime</div>
+          <div class="synthesis-text" id="synthesisText">
+            <div class="ldots ldots-i"><span></span><span></span><span></span></div>
+          </div>
+        </div>
+        <div class="synthesis-cta">
+          <div class="synthesis-cta-title">Votre portrait est complet. La rencontre peut commencer.</div>
+          <div class="synthesis-cta-desc">Le Salon de la Rencontre Célibataire du 6 juin à Vannes réunit 250 célibataires dans un cadre pensé pour la vraie rencontre. Nous utilisons vos profils pour organiser des mises en relation personnalisées sur place.</div>
+          <a href="https://ypl.me/PUR" target="_blank" class="synthesis-cta-btn">Réserver ma place — Vannes, 6 juin 2026</a>
+        </div>
+      </div>
+      <div class="ikigai-grid" id="gridI"></div>
+      <div class="ikigai-center ikigai-center-i">
+        <div class="ikigai-center-heart">🔥</div>
+        <div class="ikigai-center-label">Mon Profil Intime</div>
+      </div>
+      <div class="sc sc-i">
+        <div class="sl sl-i">✦ Mon portrait de compatibilité</div>
+        <div class="portrait-text portrait-text-i" id="portraitI"><div class="ldots ldots-i"><span></span><span></span><span></span></div></div>
+      </div>
+            <div class="form-light">
+        <p class="form-light-text">Vous souhaitez que nous gardions votre portrait pour vous proposer des rencontres adaptées ? Laissez simplement votre email.</p>
+        <div class="form-light-row">
+          <input type="email" id="iEmailLight" placeholder="votre@email.fr" autocomplete="email" inputmode="email" class="form-light-input">
+          <button class="form-light-btn" id="iBtnLight">Envoyer ✔</button>
+        </div>
+        <div class="confirm-msg confirm-msg-i" id="iConfirmLight" style="display:none;">Merci. Nous reviendrons vers vous très prochainement.</div>
+        <p class="rgpd-mention rgpd-mention-i" style="margin-top:10px;">Vos données nous sont confiées. Elles ne seront jamais vendues, jamais partagées.</p>
+      </div>
+      <div class="switch-tool switch-to-amoureux">
+        <p>Vous souhaitez maintenant explorer votre profil amoureux ? L'Ikigai Amoureux vous attend.</p>
+        <button class="hc-btn switch-btn-a" id="btnSwitchAmoureux">Découvrir l'Ikigai Amoureux →</button>
+      </div>
+      <div class="cta cta-i">
+        <div class="ctat ctat-i">Votre prochaine belle histoire commence peut-être ici.</div>
+        <div class="ctad">Rencontrez des célibataires qui vous ressemblent, dans un cadre pensé pour la vraie rencontre.</div>
+        <div class="cta-events">
+          <a href="https://ypl.me/PUR" target="_blank" class="ctab ctab-i">Salon de la Rencontre Célibataire — Vannes, samedi 6 juin 2026</a>
+        </div>
+      </div>
+      <div style="text-align:center"><button class="rbtn rbtn-i" id="iRestart">Recommencer mon Ikigai Intime</button></div>
+    </div>
+
+    <!-- ===== SYNTHÈSE GLOBALE ===== -->
+    <div class="synthesis-block" id="synthesisBlock">
+      <div class="synthesis-header">
+        <div class="synthesis-eyebrow">Les Cœurs Solitaires</div>
+        <div class="synthesis-title">Mon Portrait Complet</div>
+        <p class="synthesis-sub">Voici ce que vos deux ikigai révèlent ensemble sur vous, en amour et dans l'intimité.</p>
+      </div>
+      <div class="synthesis-recap" id="synthesisRecap"></div>
+      <div class="synthesis-card">
+        <div class="synthesis-sl">✦ Ma vérité amoureuse et intime</div>
+        <div class="synthesis-text" id="synthesisText">
+          <div class="ldots ldots-i"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+      <div class="synthesis-cta">
+        <div class="synthesis-cta-title">Votre portrait est complet. La rencontre peut commencer.</div>
+        <div class="synthesis-cta-desc">Le Salon de la Rencontre Célibataire du 6 juin à Vannes réunit 250 célibataires dans un cadre pensé pour la vraie rencontre. Nous utilisons vos profils pour organiser des mises en relation personnalisées sur place.</div>
+        <a href="https://ypl.me/PUR" target="_blank" class="synthesis-cta-btn">Réserver ma place — Vannes, 6 juin 2026</a>
+      </div>
+    </div>
+    <footer>©2026 Lili Karantez — Les Cœurs Solitaires — SIRET 40149331700069<br>lilikarantez@gmail.com — Toute reproduction interdite, même partielle.</footer>
+  </div>
+
+</div><!-- /wrap -->
+<script>
+var STEPS_A = [{"icon": "spark", "class": "s1", "title": "Ce qui me fait vibrer en amour", "desc": "Les émotions, les moments, les sensations qui m'animent dans une relation.", "color": "c1", "suggestions": ["Complicité", "Tendresse", "Passion", "Légèreté", "Intensité", "Rires", "Aventure", "Sécurité", "Désir", "Liberté", "Douceur", "Profondeur", "Confiance", "Magie", "Chaleur", "Électricité", "Fusion", "Poésie", "Spontanéité", "Joie", "Mystère", "Silence", "Éveil", "Ancrage", "Envie", "Frisson", "Lumière", "Mouvement", "Vérité", "Grâce", "Étincelle", "Présence", "Ferveur", "Sensualité", "Harmonie", "Souffle", "Élan", "Ivresse", "Plénitude", "Vibration"]}, {"icon": "gem", "class": "s2", "title": "Ce que j'apporte à l'autre", "desc": "Mes qualités, ma façon d'aimer, ce que je donne naturellement dans une relation.", "color": "c2", "suggestions": ["Loyauté", "Humour", "Écoute", "Générosité", "Présence", "Créativité", "Bienveillance", "Honnêteté", "Enthousiasme", "Stabilité", "Tendresse", "Fantaisie", "Protection", "Légèreté", "Fiabilité", "Sensualité", "Curiosité", "Empathie", "Dévouement", "Franchise", "Patience", "Chaleur", "Douceur", "Vivacité", "Engagement", "Sincérité", "Courage", "Soutien", "Liberté", "Complicité", "Surprise", "Délicatesse", "Équilibre", "Attention", "Ancrage", "Profondeur", "Authenticité", "Joie", "Sérénité", "Intensité"]}, {"icon": "moon", "class": "s3", "title": "Ce dont j'ai besoin pour m'épanouir", "desc": "Mes besoins affectifs profonds, ce sans quoi je ne m'ouvre pas vraiment.", "color": "c3", "suggestions": ["Respect", "Espace", "Confiance", "Authenticité", "Reconnaissance", "Intimité", "Liberté", "Communication", "Fidélité", "Douceur", "Partage", "Soutien", "Sécurité", "Admiration", "Stabilité", "Complicité", "Équilibre", "Transparence", "Engagement", "Ancrage", "Tendresse", "Loyauté", "Légèreté", "Présence", "Passion", "Harmonie", "Paix", "Aventure", "Croissance", "Rires", "Profondeur", "Écoute", "Vérité", "Désir", "Chaleur", "Évolution", "Bienveillance", "Surprise", "Appartenance", "Liberté"]}, {"icon": "star", "class": "s4", "title": "Ce que je cherche chez l'autre", "desc": "Les traits, valeurs, comportements qui m'attirent et me font rester.", "color": "c4", "suggestions": ["Curiosité", "Maturité", "Humour", "Ambition", "Empathie", "Sensualité", "Ouverture", "Indépendance", "Chaleur", "Intelligence", "Équilibre", "Originalité", "Générosité", "Intégrité", "Douceur", "Présence", "Profondeur", "Intensité", "Authenticité", "Élégance", "Bienveillance", "Loyauté", "Légèreté", "Créativité", "Courage", "Tendresse", "Stabilité", "Passion", "Franchise", "Délicatesse", "Vivacité", "Sérénité", "Ancrage", "Liberté", "Engagement", "Complicité", "Aventure", "Confiance", "Sincérité", "Grâce"]}];
+var STEPS_I = [{"icon": "lightning", "class": "s1", "title": "Ce qui m'allume", "desc": "Les déclencheurs, les situations, les sensations qui éveillent mon désir.", "color": "c1", "suggestions": ["Regard", "Tension", "Peau", "Odeur", "Voix", "Surprise", "Interdit", "Lenteur", "Urgence", "Jeu", "Séduction", "Domination", "Soumission", "Confiance", "Ambiance", "Musique", "Obscurité", "Lumière", "Chaleur", "Contact", "Transgression", "Attente", "Déshabillé", "Murmure", "Frisson", "Contrôle", "Abandon", "Rituel", "Imprévu", "Luxure", "Fantasme", "Puissance", "Vulnérabilité", "Tendresse", "Brutalité", "Esthétique", "Scénario", "Naturel", "Instinct", "Électricité"]}, {"icon": "fire", "class": "s2", "title": "Ce que je suis dans l'intimité", "desc": "Mon style, ma nature, ma façon d'être quand je m'abandonne vraiment.", "color": "c2", "suggestions": ["Ardent", "Doux", "Dominant", "Soumis", "Curieux", "Joueur", "Intense", "Tendre", "Expressif", "Silencieux", "Inventif", "Instinctif", "Généreux", "Exigeant", "Sensuel", "Animal", "Délicat", "Fougueux", "Présent", "Profond", "Libre", "Attentif", "Guidant", "Suiveur", "Audacieux", "Pudique", "Débridé", "Lent", "Rapide", "Fusionnel", "Romantique", "Brut", "Raffiné", "Endurant", "Explosif", "Sensible", "Aventureux", "Méthodique", "Spontané", "Passionné"]}, {"icon": "key", "class": "s3", "title": "Ce dont j'ai besoin pour m'abandonner", "desc": "Les conditions, le cadre, ce sans quoi je ne me libère pas vraiment.", "color": "c3", "suggestions": ["Confiance", "Désir réciproque", "Sécurité", "Complicité", "Silence", "Temps", "Espace", "Intimité", "Humour", "Respect", "Communication", "Consentement", "Lenteur", "Spontanéité", "Confort", "Désir exprimé", "Curiosité", "Engagement", "Tendresse préalable", "Cadre clair", "Liberté", "Surprise", "Régularité", "Nouveauté", "Corps apaisé", "Esprit libre", "Envie partagée", "Regard complice", "Pas de jugement", "Réciprocité", "Initiative", "Douceur", "Intensité", "Rituel", "Atmosphère", "Moment choisi", "Envie pure", "Accord tacite", "Chaleur", "Sécurité émotionnelle"]}, {"icon": "crown", "class": "s4", "title": "Ce que j'attends de l'autre", "desc": "Les comportements, attitudes, qualités qui me font rester et revenir.", "color": "c4", "suggestions": ["Présence", "Désir", "Initiative", "Douceur", "Audace", "Écoute", "Générosité", "Endurance", "Créativité", "Technique", "Instinct", "Sensibilité", "Puissance", "Délicatesse", "Humour", "Complicité", "Respect", "Engagement", "Ardeur", "Franchise", "Curiosité", "Intensité", "Tendresse", "Confiance", "Expressivité", "Maîtrise", "Lâcher prise", "Enthousiasme", "Fiabilité", "Authenticité", "Surprise", "Réciprocité", "Profondeur", "Légèreté", "Patience", "Vivacité", "Passion", "Élégance", "Spontanéité", "Liberté"]}];
+var CLABELS_A = ["Ce qui me fait vibrer", "Ce que j'apporte", "Ce dont j'ai besoin", "Ce que je cherche"];
+var CLABELS_I = ["Ce qui m'allume", "Ce que je suis", "Ce dont j'ai besoin", "Ce que j'attends"];
+var FB_A = ["Tu aimes avec tout ton corps et tout ton esprit, sans jamais choisir entre les deux. Ce que tu portes en toi, cette façon de donner sans compter, est une force rare que peu savent reconnaître au premier regard. Tu as besoin d'un espace où te poser vraiment, d'une présence qui ne vacille pas. Ce que tu cherches chez l'autre, c'est quelqu'un qui soit à la hauteur de ce que tu es.", "Il y a en toi une intensité tranquille que l'amour seul peut révéler. Tu donnes avec générosité, sans calcul, et tu attends en retour ce que tu mérites : une présence vraie, une parole juste, un regard qui te voit entièrement. Ce que tu cherches ne se résume pas à un idéal. Tu cherches une rencontre, celle où deux personnes décident enfin de s'ouvrir vraiment.", "Tu sais que l'amour n'est pas un hasard mais une décision que l'on prend chaque matin. Ce que tu apportes dans une relation est précieux et rare. Ce dont tu as besoin pour t'épanouir est légitime. Ce que tu cherches existe et tu le trouveras en quelqu'un qui avance vers la vie avec la même force tranquille que toi."];
+var FB_I = ["Tu t'allumes vite quand le désir est réel, quand il se voit et quand il ne se cache pas. Ce que tu es dans l'intimité, c'est quelqu'un qui donne sans compter mais qui a besoin, pour se libérer vraiment, que l'autre soit là entièrement. Tu ne supportes pas le demi-désir. Ce que tu cherches chez l'autre, c'est une présence brûlante et franche, qui ne joue pas.", "Il y a en toi une sensualité qui ne demande qu'à s'ouvrir, à condition que le cadre soit juste. Tu sais ce qui t'allume et tu ne t'en excuses pas. Ce que tu apportes dans l'intimité est rare : cette façon d'être à la fois intense et attentif. Ce que tu attends de l'autre, c'est qu'il soit aussi vivant et présent que toi.", "Tu donnes tout quand tu te sens en sécurité, pas la sécurité du confort mais celle du désir partagé et de l'accord silencieux entre deux corps qui se reconnaissent. Ce dont tu as besoin avant tout, c'est de sentir que l'autre te veut vraiment. Quand cette certitude est là, tu t'abandonnes sans retenue et sans calcul."];
+var SVGS_A = {"spark": "<svg viewBox=\"0 0 64 64\" fill=\"none\"><circle cx=\"32\" cy=\"32\" r=\"30\" fill=\"rgba(233,30,140,0.1)\" stroke=\"rgba(233,30,140,0.3)\" stroke-width=\"1.2\"/><path d=\"M32 10 L35 27 L52 32 L35 37 L32 54 L29 37 L12 32 L29 27 Z\" fill=\"url(#sg1)\" opacity=\"0.92\"/><circle cx=\"32\" cy=\"32\" r=\"4\" fill=\"white\" opacity=\"0.85\"/><circle cx=\"22\" cy=\"18\" r=\"2\" fill=\"#E91E8C\" opacity=\"0.5\"/><circle cx=\"46\" cy=\"20\" r=\"1.5\" fill=\"#f48fb1\" opacity=\"0.55\"/><defs><linearGradient id=\"sg1\" x1=\"32\" y1=\"10\" x2=\"32\" y2=\"54\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0%\" stop-color=\"#f48fb1\"/><stop offset=\"50%\" stop-color=\"#E91E8C\"/><stop offset=\"100%\" stop-color=\"#9B59B6\"/></linearGradient></defs></svg>", "gem": "<svg viewBox=\"0 0 64 64\" fill=\"none\"><circle cx=\"32\" cy=\"32\" r=\"30\" fill=\"rgba(0,188,212,0.1)\" stroke=\"rgba(0,188,212,0.3)\" stroke-width=\"1.2\"/><polygon points=\"32,12 46,24 42,50 22,50 18,24\" fill=\"rgba(0,188,212,0.18)\" stroke=\"#00BCD4\" stroke-width=\"1.4\"/><polygon points=\"32,12 46,24 32,30\" fill=\"rgba(0,188,212,0.45)\"/><polygon points=\"32,12 18,24 32,30\" fill=\"rgba(0,188,212,0.65)\"/><polygon points=\"32,30 46,24 42,50 22,50 18,24\" fill=\"rgba(0,188,212,0.22)\"/><line x1=\"32\" y1=\"12\" x2=\"32\" y2=\"30\" stroke=\"white\" stroke-width=\"1\" opacity=\"0.55\"/></svg>", "moon": "<svg viewBox=\"0 0 64 64\" fill=\"none\"><circle cx=\"32\" cy=\"32\" r=\"30\" fill=\"rgba(155,89,182,0.1)\" stroke=\"rgba(155,89,182,0.3)\" stroke-width=\"1.2\"/><path d=\"M40 14 C30 17 22 24 22 33 C22 43 30 51 40 52 C32 49 26 42 26 33 C26 24 32 17 40 14Z\" fill=\"#9B59B6\" opacity=\"0.8\"/><circle cx=\"44\" cy=\"19\" r=\"2.5\" fill=\"#ce93d8\" opacity=\"0.75\"/><path d=\"M34 21 L35.5 26 L40.5 26.5 L37 30 L38 35 L34 32.5 L30 35 L31 30 L27.5 26.5 L32.5 26Z\" fill=\"rgba(206,147,216,0.45)\" stroke=\"rgba(155,89,182,0.35)\" stroke-width=\"0.6\"/></svg>", "star": "<svg viewBox=\"0 0 64 64\" fill=\"none\"><circle cx=\"32\" cy=\"32\" r=\"30\" fill=\"rgba(233,30,140,0.08)\" stroke=\"rgba(180,60,140,0.25)\" stroke-width=\"1.2\"/><path d=\"M32 12 L36 25 L50 25 L39 34 L43 47 L32 38 L21 47 L25 34 L14 25 L28 25 Z\" fill=\"rgba(233,30,140,0.72)\" stroke=\"rgba(233,30,140,0.4)\" stroke-width=\"0.9\"/><path d=\"M32 16 L35 25 L44 25 L37 31 L39.5 40 L32 35 L24.5 40 L27 31 L20 25 L29 25 Z\" fill=\"rgba(255,255,255,0.2)\"/></svg>"};
+var SVGS_I = {"lightning": "<svg viewBox=\"0 0 64 64\" fill=\"none\"><circle cx=\"32\" cy=\"32\" r=\"30\" fill=\"rgba(180,0,40,0.1)\" stroke=\"rgba(180,0,40,0.3)\" stroke-width=\"1.2\"/><path d=\"M38 10 L22 34 L32 34 L26 54 L44 28 L34 28 Z\" fill=\"url(#lg1)\" opacity=\"0.92\" stroke=\"rgba(255,180,50,0.4)\" stroke-width=\"0.8\" stroke-linejoin=\"round\"/><path d=\"M38 10 L28 28 L34 28 L30 42 L44 28 L34 28 L38 10Z\" fill=\"rgba(255,220,80,0.3)\"/><defs><linearGradient id=\"lg1\" x1=\"32\" y1=\"10\" x2=\"32\" y2=\"54\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0%\" stop-color=\"#FFD700\"/><stop offset=\"45%\" stop-color=\"#FF4400\"/><stop offset=\"100%\" stop-color=\"#8B0030\"/></linearGradient></defs></svg>", "fire": "<svg viewBox=\"0 0 64 64\" fill=\"none\"><circle cx=\"32\" cy=\"32\" r=\"30\" fill=\"rgba(140,0,60,0.1)\" stroke=\"rgba(140,0,60,0.28)\" stroke-width=\"1.2\"/><path d=\"M24 50 C24 50 21 39 26 31 C26 31 25 36 29 34 C29 34 26 27 32 14 C32 14 35 22 33 28 C33 28 37 24 36 19 C36 19 42 26 39 37 C39 37 42 34 41 30 C41 30 45 37 40 46 C40 46 36 49 32 50 C28 49 24 50 24 50Z\" fill=\"url(#fg1)\" opacity=\"0.9\"/><defs><linearGradient id=\"fg1\" x1=\"32\" y1=\"14\" x2=\"32\" y2=\"50\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0%\" stop-color=\"#FFD700\" stop-opacity=\"0.95\"/><stop offset=\"40%\" stop-color=\"#FF4400\"/><stop offset=\"100%\" stop-color=\"#8B0030\"/></linearGradient></defs></svg>", "key": "<svg viewBox=\"0 0 64 64\" fill=\"none\"><circle cx=\"32\" cy=\"32\" r=\"30\" fill=\"rgba(100,0,80,0.1)\" stroke=\"rgba(100,0,80,0.28)\" stroke-width=\"1.2\"/><circle cx=\"24\" cy=\"24\" r=\"10\" fill=\"none\" stroke=\"#8B006B\" stroke-width=\"2.2\"/><circle cx=\"24\" cy=\"24\" r=\"5\" fill=\"rgba(139,0,107,0.3)\"/><circle cx=\"24\" cy=\"24\" r=\"2.5\" fill=\"#FFD700\" opacity=\"0.75\"/><line x1=\"31.5\" y1=\"30.5\" x2=\"48\" y2=\"47\" stroke=\"#8B006B\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><line x1=\"44\" y1=\"43\" x2=\"44\" y2=\"49\" stroke=\"#8B006B\" stroke-width=\"2.2\" stroke-linecap=\"round\"/><line x1=\"39\" y1=\"46\" x2=\"39\" y2=\"52\" stroke=\"#8B006B\" stroke-width=\"2.2\" stroke-linecap=\"round\"/></svg>", "crown": "<svg viewBox=\"0 0 64 64\" fill=\"none\"><circle cx=\"32\" cy=\"32\" r=\"30\" fill=\"rgba(160,100,0,0.08)\" stroke=\"rgba(180,130,20,0.3)\" stroke-width=\"1.2\"/><path d=\"M14 44 L20 24 L28 36 L32 18 L36 36 L44 24 L50 44 Z\" fill=\"url(#cg1)\" stroke=\"rgba(180,130,20,0.5)\" stroke-width=\"0.9\" stroke-linejoin=\"round\"/><rect x=\"14\" y=\"43\" width=\"36\" height=\"3.5\" rx=\"1.2\" fill=\"#B8860B\" opacity=\"0.65\"/><circle cx=\"32\" cy=\"18\" r=\"3\" fill=\"#FFD700\" opacity=\"0.9\"/><circle cx=\"20\" cy=\"24\" r=\"2.2\" fill=\"#FFD700\" opacity=\"0.75\"/><circle cx=\"44\" cy=\"24\" r=\"2.2\" fill=\"#FFD700\" opacity=\"0.75\"/><defs><linearGradient id=\"cg1\" x1=\"32\" y1=\"18\" x2=\"32\" y2=\"44\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0%\" stop-color=\"#FFD700\"/><stop offset=\"100%\" stop-color=\"#8B6300\"/></linearGradient></defs></svg>"};
+var ICONS_A = ["spark", "gem", "moon", "star"];
+var ICONS_I = ["lightning", "fire", "key", "crown"];
+var QCLASS_A = ['qa1','qa2','qa3','qa4'];
+var QCLASS_I = ['qi1','qi2','qi3','qi4'];
+var TAG_A = ['c1a','c2a','c3a','c4a'];
+var TAG_I = ['c1i','c2i','c3i','c4i'];
+
+var tagsA = [[],[],[],[]];
+var tagsI = [[],[],[],[]];
+var portraitA = '';
+var portraitI = '';
+
+/* ---- NAVIGATION ---- */
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  var bg = id === 'sec-home' ? 'bg-home' : id === 'sec-amoureux' ? 'bg-amoureux' : 'bg-intime';
+  document.body.className = bg;
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+document.getElementById('btnGoAmoureux').addEventListener('click', function(){ showSection('sec-amoureux'); });
+document.getElementById('btnGoIntime').addEventListener('click', function(){ showSection('sec-intime'); });
+document.getElementById('backHomeA').addEventListener('click', function(){ showSection('sec-home'); });
+document.getElementById('backHomeI').addEventListener('click', function(){ showSection('sec-home'); });
+document.getElementById('btnSwitchIntime').addEventListener('click', function(){ showSection('sec-intime'); });
+document.getElementById('btnSwitchAmoureux').addEventListener('click', function(){ showSection('sec-amoureux'); });
+
+/* ---- BUILD STEPS ---- */
+function buildSteps(steps, svgs, icons, containerId, dotPrefix, isIntime) {
+  var c = document.getElementById(containerId);
+  var suffix = isIntime ? 'I' : 'A';
+  var tagClasses = isIntime ? TAG_I : TAG_A;
+  var tareas = isIntime ? 'tarea tarea-i' : 'tarea tarea-a';
+  var sgClass = isIntime ? 'sg sg-i' : 'sg sg-a';
+  var btnClass = isIntime ? 'btn btn-i' : 'btn btn-a';
+  var backClass = isIntime ? 'btn btn-si' : 'btn btn-s';
+  var titleClass = isIntime ? 'stitle stitle-i' : 'stitle stitle-a';
+
+  steps.forEach(function(s, i) {
+    var div = document.createElement('div');
+    div.className = 'step' + (i === 0 ? ' show' : '');
+    div.id = 'step' + suffix + i;
+    var isLast = (i === steps.length - 1);
+    var backBtn = i > 0 ? '<button class="' + backClass + '" id="back' + suffix + i + '">← Retour</button>' : '<span></span>';
+    var nextId = isLast ? 'reveal' + suffix : 'next' + suffix + i;
+    var nextLabel = isLast ? 'Révéler mon profil ✦' : 'Cercle suivant →';
+    div.innerHTML =
+      '<div class="sh"><div class="si">' + svgs[icons[i]] + '</div>' +
+      '<div><div class="' + titleClass + '">' + s.title + '</div><div class="sdesc">' + s.desc + '</div></div></div>' +
+      '<div class="' + tareas + '" id="area' + suffix + i + '"><input class="tinput" id="inp' + suffix + i + '" placeholder="Tapez un mot, validez avec Entrée…" maxlength="25"></div>' +
+      '<div class="hint">Appuyez sur Entrée pour valider chaque mot. 3 à 5 mots recommandés.</div>' +
+      '<div class="sugg" id="sugg' + suffix + i + '"></div>' +
+      '<div class="nav">' + backBtn + '<span class="cnt" id="cnt' + suffix + i + '">0 / 5</span>' +
+      '<button class="' + btnClass + ' btn-p" id="' + nextId + '" disabled>' + nextLabel + '</button></div>';
+    c.appendChild(div);
+
+    s.suggestions.forEach(function(w) {
+      var btn = document.createElement('button');
+      btn.className = sgClass;
+      btn.textContent = w;
+      btn.addEventListener('click', (function(idx, word, suf) { return function() { addTag(suf, idx, word); }; })(i, w, suffix));
+      document.getElementById('sugg' + suffix + i).appendChild(btn);
+    });
+
+    document.getElementById('inp' + suffix + i).addEventListener('keydown', (function(idx, suf) {
+      return function(e) {
+        if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); var v = this.value.trim(); if (v) addTag(suf, idx, v); }
+      };
+    })(i, suffix));
+
+    if (i > 0) {
+      document.getElementById('back' + suffix + i).addEventListener('click', (function(idx, suf) { return function() { goBack(suf, idx); }; })(i, suffix));
+    }
+    if (isLast) {
+      document.getElementById('reveal' + suffix).addEventListener('click', (function(suf) { return function() { showResult(suf); }; })(suffix));
+    } else {
+      document.getElementById('next' + suffix + i).addEventListener('click', (function(idx, suf) { return function() { goNext(suf, idx); }; })(i, suffix));
+    }
+  });
+}
+
+function getTags(suffix) { return suffix === 'A' ? tagsA : tagsI; }
+function getSteps(suffix) { return suffix === 'A' ? STEPS_A : STEPS_I; }
+function getTagClasses(suffix) { return suffix === 'A' ? TAG_A : TAG_I; }
+
+function addTag(suffix, si, val) {
+  val = val.replace(/,/g,'').trim();
+  var tags = getTags(suffix);
+  if (!val || tags[si].length >= 5) return;
+  if (tags[si].indexOf(val) !== -1) return;
+  tags[si].push(val);
+  var area = document.getElementById('area' + suffix + si);
+  var inp = document.getElementById('inp' + suffix + si);
+  var t = document.createElement('span');
+  t.className = 'tag ' + getTagClasses(suffix)[si];
+  t.innerHTML = val + ' <span class="trm">×</span>';
+  t.querySelector('.trm').addEventListener('click', (function(sf, s, v, el) {
+    return function() { getTags(sf)[s] = getTags(sf)[s].filter(function(x){ return x !== v; }); el.remove(); updateUI(sf, s); };
+  })(suffix, si, val, t));
+  area.insertBefore(t, inp);
+  inp.value = '';
+  updateUI(suffix, si);
+}
+
+function updateUI(suffix, si) {
+  var tags = getTags(suffix);
+  document.getElementById('cnt' + suffix + si).textContent = tags[si].length + ' / 5';
+  var isLast = (si === getSteps(suffix).length - 1);
+  var btn = document.getElementById(isLast ? 'reveal' + suffix : 'next' + suffix + si);
+  if (btn) btn.disabled = tags[si].length < 1;
+}
+
+function goNext(suffix, from) {
+  document.getElementById('step' + suffix + from).classList.remove('show');
+  document.getElementById('d' + suffix + from).classList.remove('on');
+  document.getElementById('d' + suffix + from).classList.add('done');
+  document.getElementById('step' + suffix + (from+1)).classList.add('show');
+  document.getElementById('d' + suffix + (from+1)).classList.add('on');
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function goBack(suffix, from) {
+  document.getElementById('step' + suffix + from).classList.remove('show');
+  document.getElementById('d' + suffix + from).classList.remove('on');
+  document.getElementById('d' + suffix + (from-1)).classList.remove('done');
+  document.getElementById('d' + suffix + (from-1)).classList.add('on');
+  document.getElementById('step' + suffix + (from-1)).classList.add('show');
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function showResult(suffix) {
+  var steps = getSteps(suffix);
+  var last = steps.length - 1;
+  document.getElementById('step' + suffix + last).classList.remove('show');
+  document.getElementById('d' + suffix + last).classList.add('done');
+  document.getElementById('d' + suffix + last).classList.remove('on');
+  document.getElementById('d' + suffix + '4').classList.add('on');
+  document.getElementById('result' + suffix).style.display = 'block';
+  buildGrid(suffix);
+  window.scrollTo({ top:0, behavior:'smooth' });
+  setTimeout(function(){ fetchPortrait(suffix); }, 120);
+}
+
+function buildGrid(suffix) {
+  var tags = getTags(suffix);
+  var clabels = suffix === 'A' ? CLABELS_A : CLABELS_I;
+  var svgs = suffix === 'A' ? SVGS_A : SVGS_I;
+  var icons = suffix === 'A' ? ICONS_A : ICONS_I;
+  var qclass = suffix === 'A' ? QCLASS_A : QCLASS_I;
+  var grid = document.getElementById('grid' + suffix);
+  grid.innerHTML = '';
+  tags.forEach(function(tlist, i) {
+    var cell = document.createElement('div');
+    cell.className = 'ikigai-cell ' + qclass[i];
+    var tagsHtml = tlist.length
+      ? tlist.map(function(w){ return '<span class="cell-tag">' + w + '</span>'; }).join('')
+      : '<span style="font-size:12px;opacity:0.35;font-style:italic;">aucun mot saisi</span>';
+    cell.innerHTML = '<div class="cell-header"><div class="cell-illu">' + svgs[icons[i]] + '</div>' +
+      '<div class="cell-label">' + clabels[i] + '</div></div><div class="cell-tags">' + tagsHtml + '</div>';
+    grid.appendChild(cell);
+  });
+}
+
+function setPortrait(suffix, text) {
+  if (suffix === 'A') { portraitA = text; } else { portraitI = text; }
+  checkShowSynthesis();
+  var el = document.getElementById('portrait' + suffix);
+  if (el) el.innerHTML = text.replace(/\n\n/g, '<br><br>').replace(/\n/g, ' ');
+}
+
+function useFallback(suffix) {
+  var fb = suffix === 'A' ? FB_A : FB_I;
+  setPortrait(suffix, fb[Math.floor(Math.random() * fb.length)]);
+}
+
+async function fetchPortrait(suffix) {
+  var tags = getTags(suffix);
+  var t0 = tags[0].join(', ') || (suffix === 'A' ? 'tendresse, passion' : 'désir, tension');
+  var t1 = tags[1].join(', ') || (suffix === 'A' ? 'loyauté, écoute' : 'ardent, présent');
+  var t2 = tags[2].join(', ') || (suffix === 'A' ? 'confiance, respect' : 'confiance, désir réciproque');
+  var t3 = tags[3].join(', ') || (suffix === 'A' ? 'authenticité, profondeur' : 'présence, générosité');
+  var prompt = suffix === 'A'
+    ? "Tu es Lili Karantez, auteure et fondatrice de la communauté Les Coeurs Solitaires. "
+      + "Voici l'ikigai amoureux d'un(e) célibataire. "
+      + "Ce qui me fait vibrer en amour : " + t0 + ". "
+      + "Ce que j'apporte à l'autre : " + t1 + ". "
+      + "Ce dont j'ai besoin pour m'épanouir : " + t2 + ". "
+      + "Ce que je cherche chez l'autre : " + t3 + ". "
+      + "Écris un portrait amoureux de 4 à 5 phrases, à la deuxième personne du singulier (tu). "
+      + "Chaque phrase doit avoir un sujet, un verbe et un complément. "
+      + "Aucun tiret dans le texte. Aucune liste. Aucune énumération séparée par des tirets. "
+      + "Utilise uniquement les mots-clés fournis pour construire un portrait unique et personnel. "
+      + "Style chaud, littéraire, direct, inspiré de Marguerite Duras et Françoise Sagan. "
+      + "Commence directement par le portrait, sans titre ni introduction."
+    : "Tu es un auteur de portraits intimes sensuels, direct et littéraire, dans la veine d'Anaïs Nin. "
+      + "Voici le profil de compatibilité sexuelle d'une personne adulte. "
+      + "Ce qui l'allume : " + t0 + ". "
+      + "Ce qu'elle est dans l'intimité : " + t1 + ". "
+      + "Ce dont elle a besoin pour s'abandonner : " + t2 + ". "
+      + "Ce qu'elle attend de l'autre : " + t3 + ". "
+      + "Écris un portrait de compatibilité intime de 4 à 5 phrases, à la deuxième personne du singulier (tu). "
+      + "Chaque phrase doit avoir un sujet, un verbe et un complément. "
+      + "Aucun tiret dans le texte. Aucune liste. Aucune énumération séparée par des tirets. "
+      + "Utilise uniquement les mots-clés fournis pour construire un portrait unique et personnel. "
+      + "Ton direct, assumé, sensuel sans être vulgaire. "
+      + "Commence directement par le portrait, sans titre ni introduction.";
+  try {
+    var resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
+    });
+    if (!resp.ok) { useFallback(suffix); return; }
+    var data = await resp.json();
+    var text = (data.content && data.content[0] && data.content[0].text) ? data.content[0].text : null;
+    if (text) { setPortrait(suffix, text); } else { useFallback(suffix); }
+  } catch(e) { useFallback(suffix); }
+}
+
+/* ---- FORMS ---- */
+function checkForm(suffix) {
+  var ok = document.getElementById(suffix === 'A' ? 'aPrenom' : 'iPrenom').value.trim()
+    && document.getElementById(suffix === 'A' ? 'aNom' : 'iNom').value.trim()
+    && document.getElementById(suffix === 'A' ? 'aAge' : 'iAge').value.trim()
+    && document.getElementById(suffix === 'A' ? 'aEmail' : 'iEmail').value.trim()
+    && document.getElementById(suffix === 'A' ? 'aVille' : 'iVille').value.trim()
+    && document.getElementById(suffix === 'A' ? 'aRgpd' : 'iRgpd').checked;
+  document.getElementById(suffix === 'A' ? 'aBtnSend' : 'iBtnSend').disabled = !ok;
+}
+['aPrenom','aNom','aAge','aEmail','aVille','aPseudo'].forEach(function(id){ document.getElementById(id).addEventListener('input', function(){ checkForm('A'); }); });
+document.getElementById('aRgpd').addEventListener('change', function(){ checkForm('A'); });
+['iPrenom','iNom','iAge','iEmail','iVille','iPseudo'].forEach(function(id){ document.getElementById(id).addEventListener('input', function(){ checkForm('I'); }); });
+document.getElementById('iRgpd').addEventListener('change', function(){ checkForm('I'); });
+
+async function sendForm(suffix) {
+  var pre = suffix === 'A' ? 'a' : 'i';
+  var prenom = document.getElementById(pre + 'Prenom').value.trim();
+  var nom = document.getElementById(pre + 'Nom').value.trim();
+  var age = document.getElementById(pre + 'Age').value.trim();
+  var email = document.getElementById(pre + 'Email').value.trim();
+  var ville = document.getElementById(pre + 'Ville').value.trim();
+  var pseudo = document.getElementById(pre + 'Pseudo').value.trim() || 'non renseigné';
+  var tags = getTags(suffix);
+  var btn = document.getElementById(pre + 'BtnSend');
+  btn.disabled = true; btn.textContent = 'Envoi en cours…';
+  var portrait = suffix === 'A' ? portraitA : portraitI;
+  var tool = suffix === 'A' ? 'Ikigai Amoureux' : 'Ikigai Intime';
+  var ikigai = (suffix === 'A'
+    ? 'Ce qui me fait vibrer : ' + tags[0].join(', ')
+      + '\nCe que j\'apporte : ' + tags[1].join(', ')
+      + '\nCe dont j\'ai besoin : ' + tags[2].join(', ')
+      + '\nCe que je cherche : ' + tags[3].join(', ')
+    : 'Ce qui m\'allume : ' + tags[0].join(', ')
+      + '\nCe que je suis : ' + tags[1].join(', ')
+      + '\nCe dont j\'ai besoin : ' + tags[2].join(', ')
+      + '\nCe que j\'attends : ' + tags[3].join(', '));
+  var msg = 'Prénom : ' + prenom + '\nNom : ' + nom + '\nÂge : ' + age
+    + '\nVille : ' + ville + '\nPseudo : ' + pseudo
+    + '\n\n--- ' + tool.toUpperCase() + ' ---\n' + ikigai
+    + '\n\n--- PORTRAIT ---\n' + portrait;
+  try {
+    await fetch('https://api.web3forms.com/submit', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ access_key: 'd42b8d9d-a52c-4888-a489-5dd59b1b0f5b',
+        subject: tool + ' — Nouveau profil : ' + prenom + ' ' + nom,
+        from_name: tool, email: 'lilikarantez@gmail.com', message: msg })
+    });
+    await fetch('https://api.web3forms.com/submit', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ access_key: 'd42b8d9d-a52c-4888-a489-5dd59b1b0f5b',
+        subject: 'Votre ' + tool + ' — Les Cœurs Solitaires',
+        from_name: 'Les Cœurs Solitaires', email: email,
+        message: 'Bonjour ' + prenom + ',\n\nVoici votre profil, tel que vous l\'avez composé.\n\n'
+          + msg + '\n\n---\nLes Cœurs Solitaires — lilikarantez@gmail.com\nSIRET 40149331700069' })
+    });
+    btn.style.display = 'none';
+    document.getElementById(pre + 'Confirm').style.display = 'block';
+  } catch(e) { btn.disabled = false; btn.textContent = 'Réessayer'; }
+}
+document.getElementById('aBtnSend').addEventListener('click', function(){ sendForm('A'); });
+document.getElementById('iBtnSend').addEventListener('click', function(){ sendForm('I'); });
+
+/* ---- RESTART ---- */
+function restart(suffix) {
+  var tags = suffix === 'A' ? tagsA : tagsI;
+  tags.forEach(function(t,i){ t.length = 0; });
+  if (suffix === 'A') { tagsA = [[],[],[],[]]; portraitA = ''; } else { tagsI = [[],[],[],[]]; portraitI = ''; }
+  var steps = getSteps(suffix);
+  steps.forEach(function(s, i) {
+    var area = document.getElementById('area' + suffix + i);
+    if (area) area.querySelectorAll('.tag').forEach(function(t){ t.remove(); });
+    var inp = document.getElementById('inp' + suffix + i);
+    if (inp) inp.value = '';
+    var cntEl = document.getElementById('cnt' + suffix + i);
+    if (cntEl) cntEl.textContent = '0 / 5';
+    var isLast = (i === steps.length - 1);
+    var btnId = isLast ? 'reveal' + suffix : 'next' + suffix + i;
+    var btn = document.getElementById(btnId);
+    if (btn) btn.disabled = true;
+    var stepEl = document.getElementById('step' + suffix + i);
+    if (stepEl) stepEl.classList.remove('show');
+  });
+  var step0 = document.getElementById('step' + suffix + '0');
+  if (step0) step0.classList.add('show');
+  for (var j = 0; j <= 4; j++) {
+    var d = document.getElementById('d' + suffix + j);
+    if (d) d.className = 'dot' + (j === 0 ? ' on' : '');
+  }
+  document.getElementById('result' + suffix).style.display = 'none';
+  document.getElementById('portrait' + suffix).innerHTML = '<div class="ldots ldots-' + suffix.toLowerCase() + '"><span></span><span></span><span></span></div>';
+  var pre = suffix === 'A' ? 'a' : 'i';
+  ['Prenom','Nom','Age','Email','Ville','Pseudo'].forEach(function(f){
+    var el = document.getElementById(pre + f); if (el) el.value = '';
+  });
+  var rgpd = document.getElementById(pre + 'Rgpd'); if (rgpd) rgpd.checked = false;
+  var sendBtn = document.getElementById(pre + 'BtnSend');
+  if (sendBtn) { sendBtn.disabled = true; sendBtn.textContent = 'Envoyer mon profil ✦'; sendBtn.style.display = ''; }
+  var confirm = document.getElementById(pre + 'Confirm'); if (confirm) confirm.style.display = 'none';
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+document.getElementById('aRestart').addEventListener('click', function(){ restart('A'); });
+document.getElementById('iRestart').addEventListener('click', function(){ restart('I'); });
+
+/* ---- HEARTS CANVAS ---- */
+var cnv = document.getElementById('hearts');
+var ctx2 = cnv.getContext('2d');
+var hlist = [];
+function rsz() { cnv.width = window.innerWidth; cnv.height = window.innerHeight; }
+rsz(); window.addEventListener('resize', rsz);
+function mkH() {
+  var r = Math.random();
+  var col = r < 0.3 ? '#E91E8C' : r < 0.5 ? '#9B59B6' : r < 0.65 ? '#B40028' : r < 0.8 ? '#C9960C' : '#00BCD4';
+  return { x:Math.random()*cnv.width, y:cnv.height+20, sz:Math.random()*8+4, sp:Math.random()*0.35+0.12, op:Math.random()*0.18+0.04, dr:(Math.random()-0.5)*0.22, col:col };
+}
+function dh(h) {
+  ctx2.save(); ctx2.globalAlpha=h.op; ctx2.fillStyle=h.col; ctx2.translate(h.x,h.y); var s=h.sz;
+  ctx2.beginPath(); ctx2.moveTo(0,-s*0.5); ctx2.bezierCurveTo(s*0.5,-s,s,-s*0.3,s,s*0.2);
+  ctx2.bezierCurveTo(s,s*0.7,0,s*1.1,0,s*1.1); ctx2.bezierCurveTo(0,s*1.1,-s,s*0.7,-s,s*0.2);
+  ctx2.bezierCurveTo(-s,-s*0.3,-s*0.5,-s,0,-s*0.5); ctx2.fill(); ctx2.restore();
+}
+function anim() {
+  ctx2.clearRect(0,0,cnv.width,cnv.height);
+  if (Math.random()<0.025) hlist.push(mkH());
+  hlist = hlist.filter(function(h){ return h.y > -30; });
+  hlist.forEach(function(h){ h.y-=h.sp; h.x+=h.dr; dh(h); });
+  requestAnimationFrame(anim);
+}
+anim();
+
+document.getElementById('iBtnLight').addEventListener('click', async function() {
+  var email = document.getElementById('iEmailLight').value.trim();
+  if (!email) return;
+  var btn = document.getElementById('iBtnLight');
+  btn.disabled = true; btn.textContent = '...';
+  try {
+    await fetch('https://api.web3forms.com/submit', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ access_key: 'd42b8d9d-a52c-4888-a489-5dd59b1b0f5b',
+        subject: 'Ikigai Intime - Contact',
+        from_name: 'Ikigai Intime', email: 'lilikarantez@gmail.com',
+        message: 'Email : ' + email + '\nProfil : ' + tagsI.map(function(t){ return t.join(', '); }).join(' | ') + '\n' + portraitI })
+    });
+    btn.style.display = 'none';
+    document.getElementById('iConfirmLight').style.display = 'block';
+  } catch(e) { btn.disabled = false; btn.textContent = 'Envoyer ✔'; }
+});
+
+
+/* ---- SYNTHÈSE GLOBALE ---- */
+function buildSynthesisRecap() {
+  var recap = document.getElementById('synthesisRecap');
+  if (!recap) return;
+  recap.innerHTML = '';
+  var allA = tagsA[0].concat(tagsA[1], tagsA[2], tagsA[3]);
+  var allI = tagsI[0].concat(tagsI[1], tagsI[2], tagsI[3]);
+  var cellA = document.createElement('div');
+  cellA.className = 'synthesis-recap-cell src-a';
+  cellA.innerHTML = '<div class="src-label">Profil amoureux</div><div class="src-tags">'
+    + allA.map(function(w){ return '<span class="src-tag">' + w + '</span>'; }).join('') + '</div>';
+  var cellI = document.createElement('div');
+  cellI.className = 'synthesis-recap-cell src-i';
+  cellI.innerHTML = '<div class="src-label">Profil intime</div><div class="src-tags">'
+    + allI.map(function(w){ return '<span class="src-tag">' + w + '</span>'; }).join('') + '</div>';
+  recap.appendChild(cellA);
+  recap.appendChild(cellI);
+}
+
+function checkShowSynthesis() {
+  var hasA = portraitA && portraitA.length > 10;
+  var hasI = portraitI && portraitI.length > 10;
+  if (hasA && hasI) {
+    var block = document.getElementById('synthesisBlock');
+    if (block && !block.classList.contains('visible')) {
+      block.classList.add('visible');
+      buildSynthesisRecap();
+      fetchSynthesis();
+    }
+  }
+}
+
+async function fetchSynthesis() {
+  var tA = tagsA[0].concat(tagsA[1], tagsA[2], tagsA[3]).join(', ') || 'tendresse, passion, loyauté, confiance';
+  var tI = tagsI[0].concat(tagsI[1], tagsI[2], tagsI[3]).join(', ') || 'désir, présence, confiance, intensité';
+  var prompt = "Tu es Lili Karantez, auteure et fondatrice de la communauté Les Coeurs Solitaires. "
+    + "Voici le profil complet d'un(e) célibataire, amoureux et intime réunis. "
+    + "Ses mots amoureux (ce qui le fait vibrer, ce qu'il apporte, ce dont il a besoin, ce qu'il cherche) : " + tA + ". "
+    + "Ses mots intimes (ce qui l'allume, ce qu'il est dans l'intimité, ce dont il a besoin pour s'abandonner, ce qu'il attend de l'autre) : " + tI + ". "
+    + "Écris un portrait complet de 5 à 6 phrases qui croise les deux dimensions, amour et intimité, à la deuxième personne du singulier (tu). "
+    + "Chaque phrase doit avoir un sujet, un verbe et un complément. "
+    + "Aucun tiret dans le texte. Aucune liste. "
+    + "Style chaud, littéraire, direct, inspiré de Marguerite Duras et Anaïs Nin. "
+    + "Commence directement par le portrait, sans titre ni introduction.";
+  try {
+    var resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1200,
+        messages: [{ role: 'user', content: prompt }] })
+    });
+    if (!resp.ok) { useSynthesisFallback(); return; }
+    var data = await resp.json();
+    var text = (data.content && data.content[0] && data.content[0].text) ? data.content[0].text : null;
+    if (text) {
+      var el = document.getElementById('synthesisText');
+      if (el) el.innerHTML = text.replace(/\n\n/g, '<br><br>').replace(/\n/g, ' ');
+    } else { useSynthesisFallback(); }
+  } catch(e) { useSynthesisFallback(); }
+}
+
+function useSynthesisFallback() {
+  var el = document.getElementById('synthesisText');
+  if (el) el.innerHTML = "Tu aimes avec tout ton être et tu désires avec la même intensité. Ce que tu donnes dans une relation et ce que tu es dans l'intimité parlent d'une seule et même personne : quelqu'un qui ne fait pas les choses à moitié. Tu as besoin d'un espace où tu peux être les deux à la fois, tendre et ardent, ouvert et exigeant. Ce que tu cherches, c'est quelqu'un qui tienne cette dualité sans en avoir peur.";
+}
+
+buildSteps(STEPS_A, SVGS_A, ICONS_A, 'stepsA', 'dA', false);
+buildSteps(STEPS_I, SVGS_I, ICONS_I, 'stepsI', 'dI', true);
+</script>
+</body>
+</html>
